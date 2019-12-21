@@ -19,7 +19,7 @@ class FirstScreen extends Component {
 
     render() { 
         return ( 
-        <ImageBackground style={{flex:1}} source={require('../../assets/background.png')}>
+        <ImageBackground style={{flex:1 , borderWidth:4,borderColor:'#D58226'}} source={require('../../assets/background.png')}>
                 
                 <Image resizeMode={'contain'} style={{height:400,width:400,alignSelf:'center'}} source={require('../../assets/UIComponents/marriott.png')}/>
 

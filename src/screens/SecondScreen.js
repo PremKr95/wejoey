@@ -19,13 +19,19 @@ class SecondScreen extends Component {
         header: null
       };
 
-      renderItem=(item)=>{
-        console.log("TCL: SecondScreen -> renderItem -> data", data)
+    renderItem=(item)=>{
+        console.log("TCL: renderItem -> item", item)
         const selectedIndex = data && data.index
+        console.log("TCL: renderItem -> selectedIndex", selectedIndex)
         const _item = item && item.item
         return(
-            <TouchableOpacity  onPress={()=>this.props.navigation.navigate('SecondScreen',{item:_item})} style={{justifyContent:'center',alignItems:'center'}}>
-                <Image style={{height:120,width:120,marginTop:16}} source={item.index == selectedIndex ?  _item.selectedImage :  _item.image}/>
+            <TouchableOpacity onPress={()=>{
+                data['item'] = firstPageData[item.index]
+                data['index']= item.index
+                console.log("TCL: renderItem -> data", data)
+                this.setState({vegOpen:false,nonVegOpen:false})
+            } }style={{justifyContent:'center',alignItems:'center'}}>
+                <Image resizeMode={'contain'} style={{height:120,width:120,marginTop:16}} source={item.index == selectedIndex ?  _item.selectedImage :  _item.image}/>
                 <Text style={{fontSize:20,color:'#fff'}}>{_item.name}</Text>
             </TouchableOpacity>
         )
@@ -42,11 +48,11 @@ class SecondScreen extends Component {
     }
 
     renderMenu=(item)=>{
+        console.log("TCL: renderMenu -> item", item)
         const _item = item && item.item
-        console.log("TCL: SecondScreen -> renderMenu -> item", item)
         return(
-            <TouchableOpacity  onPress={()=>this.props.navigation.navigate('SecondScreen',{item:_item})} style={{justifyContent:'center',alignItems:'center'}}>
-                <Image style={{height:120,width:120,marginTop:16}} source={_item.image}/>
+            <TouchableOpacity  onPress={()=>this.props.navigation.navigate('ThirdScreen',{data:data, item:_item , selectedArr : data.item.vegMenu })} style={{width:'20%',justifyContent:'center',alignItems:'center'}}>
+                <Image resizeMode={'contain'} style={{height:120,width:120,marginTop:16}} source={_item.image}/>
                 <Text style={{fontSize:20,color:'#fff'}}>{_item.name}</Text>
             </TouchableOpacity>
         )
@@ -59,7 +65,7 @@ class SecondScreen extends Component {
         const vegMenu = data && data.item && data.item.vegMenu
         const nonVegMenu = data && data.item && data.item.nonVegMenu
         return ( 
-            <ImageBackground style={{flex:1,flexDirection:'row'}} source={require('../../assets/background.png')}>
+            <ImageBackground style={{flex:1,flexDirection:'row',borderWidth:4,borderColor:'#D58226'}} source={require('../../assets/background.png')}>
                    <View style={{height:'100%',width:170,backgroundColor:'rgba(0,0,0,0.6)'}}>
                         <FlatList
                             keyExtractor={(item,index)=>index.toString()}
@@ -79,10 +85,10 @@ class SecondScreen extends Component {
                         
                         {vegOpen &&
                         <FlatList
-                            style={{margin:8,backgroundColor:'rgba(0,0,0,0.6)' , padding:24}}
+                            style={{margin:8,backgroundColor:'rgba(0,0,0,0.6)' , padding:24 }}
                             data={vegMenu}
                             renderItem={item=>this.renderMenu(item)}
-                            numColumns={6}
+                            numColumns={5}
                         />}
 
                         <TouchableOpacity onPress={()=>this.toggleMenu('nonveg')} style={{backgroundColor:'black', flexDirection:'row',alignItems:'center', marginTop:32, height:80,width:'100%'}}>
@@ -93,10 +99,10 @@ class SecondScreen extends Component {
 
                         {nonVegOpen &&
                         <FlatList
-                            style={{margin:8,backgroundColor:'rgba(0,0,0,0.6)' , flex:1}}
+                            style={{margin:8,backgroundColor:'rgba(0,0,0,0.6)'}}
                             data={nonVegMenu}
                             renderItem={item=>this.renderMenu(item)}
-                            numColumns={6}
+                            numColumns={5}
                         />}
                     </View>
             </ImageBackground>
